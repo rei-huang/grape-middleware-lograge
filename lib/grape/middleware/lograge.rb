@@ -80,6 +80,8 @@ class Grape::Middleware::Lograge < Grape::Middleware::Globals
   end
 
   def after(payload, status)
+    ActiveSupport::Notifications.unsubscribe(@db_subscription) if @db_subscription
+
     payload[:status]     = status
     payload[:format]     = env['api.format']
     payload[:version]    = env['api.version']
